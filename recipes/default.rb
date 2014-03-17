@@ -2,24 +2,24 @@
 packages = %w(
   fail2ban
   ufw
-  unattended-upgrades
 )
+# unattended-upgrades
 
 # install the above security packages
 packages.each { |name| package name }
 
 # Set the system to install security updates automatically each day
-file '/etc/apt/apt.conf.d/10periodic' do
-  owner 'root'
-  group 'root'
-  mode '0644'
-  content <<-EOF
-  APT::Periodic::Update-Package-Lists "1";
-  APT::Periodic::Download-Upgradeable-Packages "1";
-  APT::Periodic::AutocleanInterval "7";
-  APT::Periodic::Unattended-Upgrade "1";
-  EOF
-end
+# file '/etc/apt/apt.conf.d/10periodic' do
+#   owner 'root'
+#   group 'root'
+#   mode '0644'
+#   content <<-EOF
+#   APT::Periodic::Update-Package-Lists "1";
+#   APT::Periodic::Download-Upgradeable-Packages "1";
+#   APT::Periodic::AutocleanInterval "7";
+#   APT::Periodic::Unattended-Upgrade "1";
+#   EOF
+# end
 
 # updated time from central server every day, particularly important
 # when certs are involved.
