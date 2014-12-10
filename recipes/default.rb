@@ -1,8 +1,5 @@
 # list of security specific packages to be installed
-packages = %w(
-  fail2ban
-  ufw
-)
+packages = %w(fail2ban ufw)
 # unattended-upgrades
 
 # install the above security packages
@@ -56,13 +53,9 @@ bash 'ssh hardening' do
   EOC
 end
 
-service "ssh" do
-  case node["platform"]
-  when "ubuntu"
-    if node["platform_version"].to_f >= 13.10
-      provider Chef::Provider::Service::Upstart
-    end
-  end
+service 'ssh' do
+  provider Chef::Provider::Service::Upstart
+  supports :restart => true
   action :restart
 end
 
@@ -77,6 +70,14 @@ bash "opening ufw for ssh traffic" do
   EOC
 end
 
+if node['firewall_allowed_ports']
+  node['firewall_allowed_ports'].each do |port|
+    bash "allow #{port} port" do
+      user "root"
+      code "ufw allow #{port}"
+    end
+  end
+end
 
 # if we've specified firewall rules in the node definition
 # then apply them here. These should be in the format:
