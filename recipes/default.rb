@@ -90,3 +90,12 @@ if node['firewall_allow']
     end
   end
 end
+
+if node['firewall_black_list']
+  node['firewall_black_list'].each do |ipaddr|
+    bash "block #{ipaddr} address" do
+      user "root"
+      code "ufw deny from #{ipaddr} to any"
+    end
+  end
+end
