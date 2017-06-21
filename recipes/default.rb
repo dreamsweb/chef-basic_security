@@ -54,8 +54,8 @@ bash 'ssh hardening' do
 end
 
 service 'ssh' do
-  provider Chef::Provider::Service::Upstart
-  supports :restart => true
+  provider Chef::Provider::Service::Init::Debian
+  supports restart: true
   action :restart
 end
 
